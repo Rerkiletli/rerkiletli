@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rauf's Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        // Configure PDF.js
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #000000;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Banner background with low opacity */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('Rauf/banner.jpeg') center/cover no-repeat;
+            opacity: 0.08;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(177, 129, 11, 0.3);
+            border-bottom: 2px solid #B1810B;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #B1810B;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #CFB53B;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #B1810B;
+        }
+
+        /* About Section with More Visible Banner Background */
+        .about-section {
+            padding: 120px 0 80px 0;
+            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.90)), url('Rauf/banner.jpeg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            margin-top: 0;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(177, 129, 11, 0.3);
+            border: 3px solid #B1810B;
+        }
+
+        .about-text {
+            flex: 2;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .about-text h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: #B1810B;
+        }
+
+        .about-text h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #000000;
+            font-weight: normal;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #B1810B 0%, #CFB53B 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(177, 129, 11, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(177, 129, 11, 0.5);
+        }
+
+        /* Action Buttons Container */
+        .action-buttons {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Resume Button */
+        .resume-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid #B1810B;
+        }
+
+        .resume-button:hover {
+            background: linear-gradient(135deg, #B1810B 0%, #CFB53B 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(177, 129, 11, 0.5);
+            border-color: #CFB53B;
+        }
+
+        /* Social Links with Proper Icons */
+        .social-links {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(177, 129, 11, 0.1);
+            color: #B1810B;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            border: 2px solid #B1810B;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #B1810B;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(177, 129, 11, 0.3);
+        }
+
+        .social-icon {
+            font-size: 1.2rem;
+        }
+
+        /* GitHub icon */
+        .github-icon::before {
+            content: "⚡";
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        /* LinkedIn icon */
+        .linkedin-icon::before {
+            content: "💼";
+        }
+
+        /* YouTube icon */
+        .youtube-icon::before {
+            content: "▶";
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.95);
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #B1810B;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            color: #CFB53B;
+            font-style: italic;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(177, 129, 11, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(177, 129, 11, 0.4);
+            border-color: #B1810B;
+        }
+
+        .project-thumbnail {
+            width: 100%;
+            height: 250px;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid #CFB53B;
+        }
+
+        .project-thumbnail iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .project-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .loading-text {
+            color: #B1810B;
+            font-style: italic;
+            position: absolute;
+            font-weight: 500;
+            z-index: 10;
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .project-info .project-date {
+            font-size: 0.9rem;
+            color: #B1810B;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .project-info p {
+            color: #333;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .project-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .view-pdf-btn, .view-project-btn {
+            background: linear-gradient(135deg, #B1810B 0%, #CFB53B 100%);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            box-shadow: 0 3px 10px rgba(177, 129, 11, 0.3);
+        }
+
+        .view-pdf-btn:hover, .view-project-btn:hover {
+            background: linear-gradient(135deg, #CFB53B 0%, #B1810B 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(177, 129, 11, 0.5);
+        }
+
+        .view-project-btn.secondary {
+            background: linear-gradient(135deg, #666 0%, #888 100%);
+        }
+
+        .view-project-btn.secondary:hover {
+            background: linear-gradient(135deg, #888 0%, #666 100%);
+        }
+
+        /* Project Type Badge */
+        .project-type {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(177, 129, 11, 0.9);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 20;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 95%;
+            max-height: 95%;
+            position: relative;
+            border: 3px solid #B1810B;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #B1810B;
+            z-index: 2001;
+            font-weight: bold;
+        }
+
+        .close:hover {
+            color: #CFB53B;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 85vh;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background: #000000;
+            color: #CFB53B;
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 2px solid #B1810B;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .project-buttons {
+                flex-direction: column;
+            }
+
+            /* Mobile action buttons */
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .resume-button {
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
+            }
+
+            .project-thumbnail {
+                height: 280px; /* Slightly taller for mobile */
+                padding: 10px;
+                background: #f0f0f0;
+            }
+            
+            .project-thumbnail canvas {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+
+            /* Hide modal on mobile since we open PDFs in new tab */
+            .modal {
+                display: none !important;
+            }
+
+            /* Better mobile button styling */
+            .view-pdf-btn, .view-project-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+                min-width: 100%;
+                margin-bottom: 8px;
+            }
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #B1810B 0%, #CFB53B 100%);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(177, 129, 11, 0.5);
+            transition: all 0.3s ease;
+            z-index: 999;
+            font-weight: bold;
+        }
+
+        .scroll-top:hover {
+            background: linear-gradient(135deg, #CFB53B 0%, #B1810B 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(177, 129, 11, 0.7);
+        }
+
+        /* Error message styling */
+        .pdf-error {
+            color: #B1810B;
+            background: rgba(207, 181, 59, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #CFB53B;
+        }
+
+        /* Mobile PDF Canvas Styling */
+        .project-thumbnail canvas {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">Rauf's Portfolio</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="Rauf/rauf_iamge.jpg" alt="Rauf">
+                </div>
+                <div class="about-text">
+                    <h1>Rauf Emre Erkiletlioglu</h1>
+                    <h2>Electronics Engineer & FPGA Developer</h2>
+                    <p>Electronics engineer with expertise in PCB design, FPGA development, and embedded systems. I specialize in creating innovative solutions that bridge the gap between hardware and software.</p>
+                    <p>My work spans across various domains including RF circuits, digital signal processing, IoT devices, and advanced electronic prototyping. Each project represents a unique challenge that I've tackled with creativity and technical precision.</p>
+                    <p>Welcome to my portfolio where you can explore projects that showcase my journey in electronics engineering and my commitment to pushing the boundaries of modern technology.</p>
+                    
+                    <div class="social-links">
+                        <a href="https://github.com/Rerkiletli" target="_blank" class="social-link">
+                            <span class="social-icon github-icon"></span>
+                            GitHub
+                        </a>
+                        <a href="https://linkedin.com/in/rerkilet" target="_blank" class="social-link">
+                            <span class="social-icon linkedin-icon"></span>
+                            LinkedIn
+                        </a>
+                        <a href="https://youtube.com/channel/UCHDjjsREH4Qx6qJHWxgQRZw" target="_blank" class="social-link">
+                            <span class="social-icon youtube-icon"></span>
+                            YouTube
+                        </a>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="resume-button" onclick="openPDF('Rauf/RaufResume.pdf')">
+                            📄 Download Resume
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <h2 class="section-title">My Projects</h2>
+            <p class="section-subtitle">Technical Documentation & Engineering Portfolio</p>
+            <div class="projects-grid" id="projects-grid">
+                <!-- Projects will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for PDF Viewing -->
+    <div id="pdf-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <iframe class="pdf-viewer" id="pdf-viewer"></iframe>
+        </div>
+    </div>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" onclick="scrollToTop()" title="Go to top">↑</button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Rauf's Portfolio. All rights reserved. V1.2</p>
+        </div>
+    </footer>
+
+    <script>
+        // Project data with detailed descriptions
+        const projects = [
+            {
+                filename: 'Car_Black_Box.pdf',
+                title: 'Vehicle Black Box',
+                date: 'Jan 2025 - May 2025',
+                type: 'PDF',
+                description: 'A sophisticated 4-layer PCB designed to integrate multiple automotive-grade subsystems into a compact form factor under 100mm x 100mm. Features comprehensive power supply meeting automotive standards (ISO 7637-2 and ISO 16750-2) with transient protection up to 40V, Raspberry Pi Pico (RP2040) microcontroller at 133MHz, BMI088 6-axis IMU, u-blox GPS module, DS3231 real-time clock, and MCP2515 CAN interface for OBD-II diagnostic port access.'
+            },
+            {
+                filename: 'HF_FPGA_Streamer.pdf',
+                title: 'High Frequency FPGA Streamer PCB',
+                date: 'May 2023 - Jul 2023',
+                type: 'PDF',
+                description: 'System-on-board solution featuring iCE40 FPGA with high-frequency IO expanders, MCU, and Ethernet interface with PoE support. Achieves output frequencies up to 2.8kHz through overclocking techniques. Includes custom PIO library for iCE40\'s SPI-like CRAM interface, Ethernet connectivity optimized for RP2040 and W5500 integration, and UDP/TCP server implementations successfully tested at 2.8kHz over low-bandwidth connections.'
+            },
+            {
+                filename: 'Rat_Race_Coupler_4GHz.pdf',
+                title: '4GHz Rat Race Coupler',
+                date: 'Nov 2024 - Dec 2024',
+                type: 'PDF',
+                description: 'Designed and implemented for ECE30700 Electromagnetic Fields and Waves Laboratory. Achieved excellent performance with maximum rejection of -39dB at 4.04GHz (1% frequency error), usable bandwidth of 2.61GHz, and insertion loss of -3.97dB. The project involved theoretical analysis using even/odd mode decomposition, 3D electromagnetic simulation in HFSS, PCB design with calculated microstrip dimensions, and physical testing with 4-port VNA calibration.'
+            },
+            {
+                filename: 'Analog_Matrix.pdf',
+                title: 'ECELabs Analog Switching PCB',
+                date: 'Mar 2024 - Apr 2024',
+                type: 'PDF',
+                description: 'Modular PCB system for ECE20007 enabling students to test fundamental circuit designs in a virtual environment before physical implementation. Uses matrix architecture where individual PCB segments can be dynamically activated to introduce resistive, capacitive, or inductive elements. Features MOSFET-based switching controlled by Raspberry Pico microcontrollers, optocouplers for galvanic isolation, and I2C clustering managed by a central Raspberry Pi.'
+            },
+            {
+                filename: 'GPIO_Board.pdf',
+                title: 'ECELabs FPGA IO Expander PCB',
+                date: 'Feb 2024 - Apr 2024',
+                type: 'PDF',
+                description: 'RP2040-based educational PCB that bridges virtual FPGA learning with hands-on hardware, connecting directly to ecelabs.io platform via WebUSB. Features two MCP23017_SO I²C port expanders providing extensive GPIO capabilities for 4 push buttons, 4 toggle switches, 8 LEDs, and a 7-segment display. Enables seamless synchronization between physical board state and virtual environment through WebUSB implementation.'
+            },
+            {
+                filename: 'VariableCapacitorDriver.pdf',
+                title: 'NEMA 17 Variable Capacitor Driver PCB',
+                date: 'Apr 2024',
+                type: 'PDF',
+                description: 'Precision control system integrating stepper motor control with capacitance sensing for automated tuning capabilities. Built around a stepper motor driver IC controlling a NEMA 17 stepper motor mechanically coupled to a variable capacitor. Implements PID control algorithm receiving target capacitance values via I2C communication and automatically adjusts motor position to achieve desired capacitance setting.'
+            },
+            {
+                filename: 'iCE40_DevBoard.pdf',
+                title: 'ECELabs ECE270 FPGA Development Board',
+                date: 'Nov 2023',
+                type: 'PDF',
+                description: 'Comprehensive FPGA development platform for ECELabs remote learning infrastructure. Features Lattice iCE40 HX8K FPGA with 7680 LUTs and 128KB block RAM, six standard PMOD connectors providing 48 digital I/O pins, integrated USB-to-SPI programming interface, and robust power management with multiple voltage rails (3.3V, 2.5V, 1.2V core). Enables students to access real hardware through web-based interfaces.'
+            },
+            {
+                filename: 'AFT-X04.pdf',
+                title: 'SoCET AFT-X04 PCB',
+                date: 'Jan 2023 - Jul 2023',
+                type: 'PDF',
+                description: 'Sophisticated educational development platform interfacing with AFT-X04 SoC through comprehensive USB-based communication and voltage translation architecture. Integrates FT232RL FTDI chip for USB-to-UART conversion and four LSF0108PWR voltage translators bridging 1.2V logic levels with standard 3.3V peripherals. Features robust power management with TPS70445 dual-output voltage regulator providing 3.3V and 1.2V rails.'
+            },
+            {
+                filename: 'AFT-X05.pdf',
+                title: 'SoCET AFT-X05 PCB',
+                date: 'Jan 2023 - Jul 2023',
+                type: 'PDF',
+                description: 'Advanced interface solution for AFT-X05 SoC connecting with ZedBoard Zynq-7000 development platform through FMC connector. Employs NVT200X bidirectional voltage-level translators to interface 1.2V logic levels with ZedBoard\'s 1.8V, 2.5V, and 3.3V I/O banks. Includes careful trace length management and impedance control maintaining signal integrity at frequencies up to 100MHz.'
+            },
+            {
+                filename: 'HA_Room_Sensors.pdf',
+                title: 'Smart Home IoT PCBs',
+                date: 'Jun 2022 - Jul 2022',
+                type: 'PDF',
+                description: 'IoT sensor node built around ESP32-C3 microcontroller with integrated PCB antenna for wireless connectivity to Home Assistant via MQTT. Integrates Bosch BME680 sensor for temperature, humidity, pressure, and indoor air quality measurements, LDR for light sensing, and PIR sensor for motion detection. Features optimized power management enabling 6-month battery operation with integrated voltage monitoring.'
+            }
+        ];
+
+        // Function to load thumbnail PDF preview
+        function loadThumbnailPreview(pdfPath, containerId) {
+            const container = document.getElementById(containerId);
+            const loadingElement = document.getElementById(`loading-${containerId.split('-')[1]}`);
+            
+            if (!container) {
+                console.error('Container not found:', containerId);
+                return;
+            }
+
+            // Check if device is mobile
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
+            if (isMobile) {
+                // For mobile devices, use PDF.js to render first page as canvas
+                loadPDFAsCanvas(pdfPath, container, loadingElement);
+            } else {
+                // For desktop, use iframe approach
+                loadPDFAsIframe(pdfPath, container, loadingElement);
+            }
+        }
+
+        // Function to load PDF as canvas for mobile devices
+        function loadPDFAsCanvas(pdfPath, container, loadingElement) {
+            // Check if PDF.js is available
+            if (typeof pdfjsLib === 'undefined') {
+                console.warn('PDF.js not available, showing fallback');
+                showThumbnailFallback(container, 'Mobile preview unavailable');
+                if (loadingElement) loadingElement.style.display = 'none';
+                return;
+            }
+
+            pdfjsLib.getDocument(pdfPath).promise.then(function(pdf) {
+                // Get first page
+                return pdf.getPage(1);
+            }).then(function(page) {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                
+                // Calculate scale to fit container
+                const containerWidth = container.offsetWidth || 400;
+                const containerHeight = container.offsetHeight || 250;
+                const viewport = page.getViewport({ scale: 1 });
+                
+                const scaleX = containerWidth / viewport.width;
+                const scaleY = containerHeight / viewport.height;
+                const scale = Math.min(scaleX, scaleY) * 0.9; // 90% to add some padding
+                
+                const scaledViewport = page.getViewport({ scale: scale });
+                
+                canvas.height = scaledViewport.height;
+                canvas.width = scaledViewport.width;
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                canvas.style.objectFit = 'contain';
+                canvas.style.borderRadius = '5px';
+                canvas.style.backgroundColor = 'white';
+                
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: scaledViewport
+                };
+                
+                return page.render(renderContext).promise.then(function() {
+                    container.innerHTML = '';
+                    container.appendChild(canvas);
+                    if (loadingElement) loadingElement.style.display = 'none';
+                    console.log('PDF rendered successfully on mobile:', pdfPath);
+                });
+            }).catch(function(error) {
+                console.error('Error rendering PDF on mobile:', error);
+                showThumbnailFallback(container, 'Mobile preview failed');
+                if (loadingElement) loadingElement.style.display = 'none';
+            });
+        }
+
+        // Function to load PDF as iframe for desktop
+        function loadPDFAsIframe(pdfPath, container, loadingElement) {
+            try {
+                const iframe = document.createElement('iframe');
+                
+                const pdfParams = [
+                    'toolbar=0',
+                    'navpanes=0', 
+                    'scrollbar=0',
+                    'zoom=FitH',
+                    'view=FitH',
+                    'pagemode=none',
+                    'page=1'
+                ].join('&');
+                
+                iframe.src = pdfPath + '#' + pdfParams;
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '5px';
+                
+                const loadTimeout = setTimeout(() => {
+                    console.warn('PDF iframe loading timeout');
+                    showThumbnailFallback(container, 'Preview unavailable');
+                    if (loadingElement) loadingElement.style.display = 'none';
+                }, 5000);
+
+                iframe.onload = function() {
+                    console.log('PDF iframe loaded successfully:', pdfPath);
+                    clearTimeout(loadTimeout);
+                    if (loadingElement) loadingElement.style.display = 'none';
+                };
+
+                iframe.onerror = function() {
+                    console.error('Failed to load PDF iframe:', pdfPath);
+                    clearTimeout(loadTimeout);
+                    showThumbnailFallback(container, 'Preview unavailable');
+                    if (loadingElement) loadingElement.style.display = 'none';
+                };
+
+                container.innerHTML = '';
+                container.appendChild(iframe);
+                if (loadingElement) loadingElement.style.display = 'none';
+
+            } catch (error) {
+                console.error('Error creating PDF iframe:', error);
+                showThumbnailFallback(container, 'Preview unavailable');
+                if (loadingElement) loadingElement.style.display = 'none';
+            }
+        }
+
+        // Helper function to show fallback thumbnail
+        function showThumbnailFallback(container, message) {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            const fallbackMessage = isMobile ? 'Tap "Open PDF" to view' : message;
+            const subMessage = isMobile ? 'Opens in new tab for better viewing' : 'Click to view full PDF';
+            
+            container.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #B1810B; background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%); border-radius: 5px;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">📄</div>
+                    <div style="font-weight: 600; text-align: center; margin-bottom: 5px;">${fallbackMessage}</div>
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8; text-align: center;">${subMessage}</div>
+                </div>
+            `;
+        }
+
+        // Function to load image preview for non-PDF projects
+        function loadImagePreview(imagePath, containerId) {
+            const container = document.getElementById(containerId);
+            const loadingElement = document.getElementById(`loading-${containerId.split('-')[1]}`);
+            
+            if (!container) {
+                console.error('Container not found:', containerId);
+                return;
+            }
+
+            try {
+                const img = document.createElement('img');
+                img.src = imagePath;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                
+                img.onload = function() {
+                    console.log('Image loaded successfully:', imagePath);
+                    if (loadingElement) {
+                        loadingElement.style.display = 'none';
+                    }
+                };
+
+                img.onerror = function() {
+                    console.error('Failed to load image:', imagePath);
+                    container.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #B1810B; background: #f8f8f8;">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">🖼️</div>
+                            <div>Image unavailable</div>
+                        </div>
+                    `;
+                    if (loadingElement) {
+                        loadingElement.style.display = 'none';
+                    }
+                };
+
+                container.innerHTML = '';
+                container.appendChild(img);
+
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('Error loading image:', error);
+                container.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #B1810B; background: #f8f8f8;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🖼️</div>
+                        <div>Image unavailable</div>
+                    </div>
+                `;
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+            }
+        }
+
+        // Function to create project cards
+        function createProjectCards() {
+            const projectsGrid = document.getElementById('projects-grid');
+            
+            // Check if device is mobile for button text
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            
+            projects.forEach((project, index) => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                
+                // Create buttons based on project type
+                let buttons = '';
+                if (project.type === 'PDF') {
+                    const buttonText = isMobile ? 'Open PDF' : 'View Full PDF';
+                    buttons = `<button class="view-pdf-btn" onclick="openPDF('PDFs/${project.filename}')">${buttonText}</button>`;
+                } else if (project.type === 'Image') {
+                    buttons = `
+                        <a href="${project.link || '#'}" target="_blank" class="view-project-btn">View Project</a>
+                        ${project.github ? `<a href="${project.github}" target="_blank" class="view-project-btn secondary">GitHub</a>` : ''}
+                    `;
+                } else if (project.type === 'Link') {
+                    buttons = `<a href="${project.link}" target="_blank" class="view-project-btn">View Project</a>`;
+                }
+
+                projectCard.innerHTML = `
+                    <div class="project-thumbnail" id="thumbnail-${index}">
+                        <div class="project-type">${project.type}</div>
+                        <div class="loading-text" id="loading-${index}">Loading preview...</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>${project.title}</h3>
+                        <div class="project-date">${project.date}</div>
+                        <p>${project.description}</p>
+                        <div class="project-buttons">
+                            ${buttons}
+                        </div>
+                    </div>
+                `;
+                projectsGrid.appendChild(projectCard);
+
+                // Load appropriate preview based on project type
+                setTimeout(() => {
+                    if (project.type === 'PDF') {
+                        loadThumbnailPreview(`Thumbnails/${project.filename}`, `thumbnail-${index}`);
+                    } else if (project.type === 'Image') {
+                        loadImagePreview(project.image, `thumbnail-${index}`);
+                    } else {
+                        // For link projects, show a placeholder
+                        const container = document.getElementById(`thumbnail-${index}`);
+                        container.innerHTML = `
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #B1810B; background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%);">
+                                <div style="font-size: 3rem; margin-bottom: 10px;">🔗</div>
+                                <div>External Project</div>
+                            </div>
+                        `;
+                    }
+                }, index * 100);
+            });
+        }
+
+        // Function to open PDF in modal
+        function openPDF(pdfPath) {
+            // Check if device is mobile
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // For mobile devices, open PDF in new tab for better experience
+                window.open(pdfPath, '_blank');
+                return;
+            }
+            
+            // For desktop, use modal
+            const modal = document.getElementById('pdf-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            pdfViewer.src = pdfPath;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Modal close functionality
+        document.querySelector('.close').onclick = function() {
+            const modal = document.getElementById('pdf-modal');
+            modal.style.display = 'none';
+            document.getElementById('pdf-viewer').src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('pdf-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.getElementById('pdf-viewer').src = '';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.style.display = 'block';
+            } else {
+                scrollTop.style.display = 'none';
+            }
+        });
+
+        // Initialize the portfolio
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing portfolio with thumbnail PDFs...');
+            createProjectCards();
+            
+            // Hide scroll to top button initially
+            document.querySelector('.scroll-top').style.display = 'none';
+        });
+    </script>
+</body>
+</html> 
